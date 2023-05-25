@@ -30,6 +30,11 @@ User.init({
       len: [3,255]
     }
   },
+  connected: {
+    type: DataTypes.TINYINT,
+    allowNull: false,
+    defaultValue: false,
+  },
   created_at: DataTypes.STRING,
   updated_at: DataTypes.STRING
 }, { 

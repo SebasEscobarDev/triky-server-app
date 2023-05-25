@@ -5,7 +5,6 @@ import {
     getTriky,
     createTriky,
     updateTriky,
-    winTriky,
     deleteTriky,
 } from '../controllers/trikys.js'
 // import { auth } from './auth'
@@ -23,14 +22,7 @@ router.get('/:id', [
 ], getTriky)
 
 //unir jugador2 a sala triky
-router.patch('/:id', [ 
-    body('player2',"Debe Ingresar Un Nombre.").notEmpty().escape().trim().isInt(),
-], updateTriky)
-
-//winner player
-router.patch('/win/:id', [ 
-    body('user_id',"Debe Ingresar Un ID.").notEmpty().escape().trim().isInt(),
-], winTriky)
+router.patch('/:id', updateTriky)
 
 router.delete('/:id', deleteTriky)
 

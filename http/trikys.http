@@ -1,34 +1,36 @@
-@api = http://localhost:3000/api/trikys
+@api = http://192.168.1.2:3000/api/trikys
 
-@apiserver = https://congregapp.sebasescobar.com/api/masters
 ### GET ALL
 GET {{api}}/
+
+### GET TRIKYS IN GAME
+GET {{api}}/ingame
 
 ### CREATE
 POST {{api}}/
 Content-Type: application/json
 
 {
-  "player1": 1
+  "player1": 6
 }
 
 ### GET BY ID
 GET {{api}}/1
 
 ### UPDATE BY ID
-PATCH {{api}}/1
+PATCH {{api}}/3
 Content-Type: application/json
 
 {
-  "player2": 2
+  "player2": 8
 }
 
 ### Update Winner Triky
-PATCH {{api}}/win/1
+PATCH {{api}}/5
 Content-Type: application/json
 
 {
-  "user_id":1
+  "user_id":8
 }
 
 ### DELETE BY ID

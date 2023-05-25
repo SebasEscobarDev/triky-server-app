@@ -85,8 +85,13 @@ export const login = async (req, res) =>{
         }
         // const token = jwt.sign({id:user.id},'secret',{ expiresIn: '24h' });
         const token = jwt.sign({id:user.id},'secret',{ expiresIn: '24h' });
+        user.connected = 1;
         return res.json({
-            user: {...user, token},
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            connected: user.connected,
+            token,
         });
     }catch( error ){
         return res.status(500).json({

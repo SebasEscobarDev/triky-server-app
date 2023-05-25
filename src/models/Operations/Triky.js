@@ -6,8 +6,14 @@ class Triky {
 
     async getTrikys(){
         return await TrikyModel.findAll({
+            where: { user_id: null },
             order: [
                 ['id', 'ASC']
+            ],
+            include: [
+                { association: 'winner', attributes: ['name'] },
+                { association: 'p1', attributes: ['name'] },
+                { association: 'p2', attributes: ['name'] },
             ],
             raw: true 
         })
@@ -16,15 +22,23 @@ class Triky {
     async getTriky(id){
         return await TrikyModel.findOne({
             where: { id },
-            raw: true 
+            include: [
+                { association: 'winner', attributes: ['name'] }
+            ],
+            raw: true,
+            returning: true
         })
     }
 
     async createTriky(body){
-		if( body.player2 == '' || body.player2 == undefined ) body.player2 = null
+        const user_id = null
+        const { player1 } = body
+        const validateTriky = await TrikyModel.findOne({where:{player1, user_id}})
+        if( validateTriky ){
+            return { message: "no puede crear un triky porque ya tiene uno activo" }
+        }
         return await TrikyModel.create({ 
                 player1:            body.player1,
-                player2:            body.player2,
                 created_at:         moment(new Date()).utcOffset('-0500').format("YYYY-MM-DD HH:mm:ss"),
                 updated_at:         moment(new Date()).utcOffset('-0500').format("YYYY-MM-DD HH:mm:ss"),
             },
@@ -35,32 +49,24 @@ class Triky {
     }
 
     async updateTriky(id, body){
-		if( body.player2 == '' || body.player2 == undefined ) body.player2 = null
-        return await TrikyModel.update({ 
-                player2:            body.player2,
-                updated_at:         moment(new Date()).utcOffset('-0500').format("YYYY-MM-DD HH:mm:ss"),
-            },
-            { 
-                where : { id },
-                returning: true,
-                raw: true
+		const { player1, player2, user_id } = body;
+        
+        try {
+            const triky = await TrikyModel.findOne({ where: { id } });
+            if (triky) {
+                if (player1) triky.player1 = player1;
+                if (player2) triky.player2 = player2;
+                if (user_id) triky.user_id = user_id; 
+                triky.updated_at = moment(new Date()).utcOffset('-0500').format("YYYY-MM-DD HH:mm:ss"),
+                await triky.save();
+            
+                return triky;
+            } else {
+                return { message: `No se pudo encontrar un triky con ID ${id}` };
             }
-        )
-    }
-
-    async winTriky(id, body){
-        return await TrikyModel.update({ 
-                player2:            body.player2,
-                updated_at:         moment(new Date()).utcOffset('-0500').format("YYYY-MM-DD HH:mm:ss"),
-                user_id:            body.user_id,
-            },
-            { 
-                where : { id },
-                include: { association: 'winner' , attributes: ['name'] },
-                returning: true,
-                raw: true
-            }
-        )
+        } catch (error) {
+            return { message: 'Error al actualizar el triky', error };
+        }
     }
 
 

@@ -1,6 +1,5 @@
-@api = http://localhost:3000/api/users
+@api = http://192.168.1.2:3000/api/users
 
-@apiserver = https://congregapp.sebasescobar.com/api/masters
 ### GET ALL
 GET {{api}}/
 
@@ -9,8 +8,18 @@ POST {{api}}/
 Content-Type: application/json
 
 {
-    "name":"Sebastián Gónzalez Escobar",
-    "email":"sebas@gmail.com",
+    "name":"Nata Gónzalez Escobar",
+    "email":"nata@gmail.com",
+    "password": "qaws12pj-22"
+}
+
+### CREATE
+POST {{api}}/
+Content-Type: application/json
+
+{
+    "name":"Lina Gomez Moreno",
+    "email":"lina@gmail.com",
     "password": "qaws12pj-22"
 }
 
@@ -22,13 +31,11 @@ PATCH {{api}}/1
 Content-Type: application/json
 
 {
-    "name":"Sebastián Gónzalez Escobar",
-    "email":"sebas@mail.com",
-    "password": "respe"
+    "connected":true
 }
 
 ### DELETE BY ID
-DELETE {{api}}/3
+DELETE {{api}}/2
 
 
 ###

@@ -19,10 +19,6 @@ class Triky {
         return await triky.updateTriky(id, body)
     }
 
-    static async winTriky(id, body) {
-        return await triky.winTriky(id, body)
-    }
-
     static async deleteTriky(id){
         return await triky.deleteTriky(id)
     }
